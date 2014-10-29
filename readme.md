@@ -17,6 +17,7 @@ This serves a simple webpage with a form that retrieves data from [Google's Civi
  * What's an API and how do you use it
  * AJAX requests: or how to get new data into someone's browser without reloading the page
  * JSON and structured data
+ * DOM Manipulation with jQuery
  * Event binding in javascript
 
 ## Going Further
