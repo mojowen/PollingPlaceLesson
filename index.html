@@ -5,6 +5,7 @@
     <script type="text/javascript" src="jquery.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript">
+        var election_data = null
         var get_polling_place = function(addy) {
             var data = {
                 key: 'AIzaSyAnFJvCCJnJtv86xVD-NXoneJ5OhYWGAjQ',
@@ -16,14 +17,21 @@
                 dataType: 'JSONP',
                 data: data,
                 url: 'https://www.googleapis.com/civicinfo/v2/voterinfo',
-            }).done( function(r) {
+            }).done( function(response) {
+                election_data = response
                 var $answer = $('#answer')
                 var $p = $('<p>');
-                $p.text("Election" + r.election.name)
+                $p.text("Election " + response.election.name)
                 $answer.append($p);
 
+                // Add a list of contests
+                $(response.contests).each( function(i, el) {
+                    var $p = $('<p>').text(el.office)
+                    $('#answer').append( $p )
+                })
+
                 var $ta = $('<textarea>');
-                $ta.val(JSON.stringify(r))
+                $ta.val(JSON.stringify(response))
                 $answer.append($ta);
             })
         }
