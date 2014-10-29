@@ -4,6 +4,37 @@
     <title>Demo Page</title>
     <script type="text/javascript" src="jquery.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript">
+        var get_polling_place = function(addy) {
+            var data = {
+                key: 'AIzaSyAnFJvCCJnJtv86xVD-NXoneJ5OhYWGAjQ',
+                electionId: '4100',
+                address: addy
+            }
+            $.ajax({
+                type:'GET',
+                dataType: 'JSONP',
+                data: data,
+                url: 'https://www.googleapis.com/civicinfo/v2/voterinfo',
+            }).done( function(r) {
+                var $answer = $('#answer')
+                var $p = $('<p>');
+                $p.text("Election" + r.election.name)
+                $answer.append($p);
+
+                var $ta = $('<textarea>');
+                $ta.val(JSON.stringify(r))
+                $answer.append($ta);
+            })
+        }
+        $(document).ready( function() {
+            $('#main form').submit( function(e) {
+                e.preventDefault();
+                var address = $(this).find('input').val();
+                get_polling_place(address)
+            })
+        })
+    </script>
 </head>
 <body>
     <div id="main">
@@ -12,6 +43,7 @@
             <input type="text" name="address" placeholder="address">
             <button type="submit">Search</button>
         </form>
+        <div id="answer"></div>
     </div>
 </body>
 </html>
